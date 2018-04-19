@@ -465,6 +465,10 @@ before packages are loaded."
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq jiralib-url "https://atlassian.spscommerce.com:443")
   (setq org-jira-working-dir (concat org-directory "/org-jira"))
+  ;; js2-mode and js-mode indents, respectively.
+  ;; For json, oddly, SPC j = works, yet SPC m = uses indent 4
+  (setq-default js2-basic-offset 2)
+  (setq-default js-indent-level 2)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
