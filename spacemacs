@@ -34,7 +34,6 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(javascript
-     python
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
@@ -43,15 +42,17 @@ This function should only modify configuration layer settings."
      ansible
      confluence
      deft
+     git
      helm
      ;; auto-completion
      ;; better-defaults
      ;; emacs-lisp
-     git
      markdown
      neotree
      org
+     org-jira
      osx
+     python
      (shell :variables
             shell-default-term-shell "/bin/bash"
             shell-default-shell 'shell
