@@ -463,6 +463,8 @@ before packages are loaded."
   (setq shell-file-name "/usr/local/bin/fish")
   (setq org-agenda-files (list org-directory))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
+  (setq jiralib-url "https://atlassian.spscommerce.com:443")
+  (setq org-jira-working-dir (concat org-directory "/org-jira"))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
