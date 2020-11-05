@@ -33,12 +33,12 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     csv
+     ansible
      clojure
-     games
-     ruby
-     html
-     graphviz
+     confluence
+     csv
+     dash
+     deft
      (go :variables go-tab-width 4)
      ;; html
      ;; ----------------------------------------------------------------
@@ -46,7 +46,6 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ansible
      ;; (auto-completion :variables
      ;;                  auto-completion-return-key-behavior 'nil
      ;;                  auto-completion-tab-key-behavior 'cycle
@@ -55,17 +54,12 @@ This function should only modify configuration layer settings."
      ;;                  auto-completion-private-snippets-directory nil)
      ;; (auto-completion :disabled-for org git)
      ;; better-defaults
-     confluence
-     deft
      ;; emacs-lisp
      git
      github
+     graphviz
      helm
-     html
-     javascript
      markdown
-     ;; neotree
-     ;; org
      (org :variables
           org-enable-jira-support t
           jiralib-url "https://atlassian.spscommerce.com:443"
@@ -73,12 +67,11 @@ This function should only modify configuration layer settings."
           org-src-preserve-indentation t
           org-startup-indented t
           )
-     ;; org-jira
      ;; (colors :variables colors-enable-nyan-cat-progress-bar t)
      osx
-     ;; (python :variables python-test-runner 'pytest)
-     ;; ruby
-     ;; shell
+     pass
+     (python :variables python-test-runner 'pytest)
+     ranger
      (shell :variables
          shell-default-term-shell "/usr/local/bin/fish"
          shell-default-shell 'shell
@@ -242,16 +235,9 @@ It should only modify the values of Spacemacs settings."
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
-                         ample-light
-                         anti-zenburn
-                         darktooth
-                         django
-                         dorsey
-                         gruvbox
-                         heroku
+                         planet
                          spacemacs-dark
                          spacemacs-light
-                         wilson
                         )
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
@@ -541,6 +527,7 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+  (setq auth-sources '(password-store))
   (setq org-directory "~/Dropbox/work/notes")
   (setq deft-directory org-directory)
   (setq deft-extensions '("org"))
