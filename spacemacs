@@ -32,7 +32,7 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(javascript
      ansible
      clojure
      confluence
@@ -66,6 +66,8 @@ This function should only modify configuration layer settings."
           org-export-with-section-numbers nil
           org-src-preserve-indentation t
           org-startup-indented t
+          org-enable-org-journal-support t
+          org-enable-roam-support t
           )
      ;; (colors :variables colors-enable-nyan-cat-progress-bar t)
      osx
@@ -96,6 +98,7 @@ This function should only modify configuration layer settings."
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(
      ox-clip
+     counsel-jq
      ;; ssh-agency
                                       )
 
@@ -256,7 +259,7 @@ It should only modify the values of Spacemacs settings."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Fira Code"
-                               :size 13
+                               :size 11
                                :weight normal
                                :width normal
                                :slant normal)
@@ -529,9 +532,10 @@ Put your configuration code here, except for variables that should be set
 before packages are loaded."
   (setq auth-sources '(password-store))
   (setq org-directory "~/Dropbox/work/notes")
+  (setq org-roam-directory "~/Dropbox/work/org-roam")
   (setq deft-directory org-directory)
   (setq deft-extensions '("org"))
-  (setq deft-use-filename-as-title nil)
+  (setq deft-use-filename-as-title t)
   (setq deft-use-filter-string-for-filename t)
   (setq deft-file-naming-rules '((noslash . "_")
                                  (nospace . "_")
@@ -539,10 +543,23 @@ before packages are loaded."
   (setq deft-auto-save-interval 10.0)
   ;; (setq shell-file-name "/usr/local/bin/fish")
   ;; (setq shell-file-name "/bin/bash")
-  (setq org-agenda-files (list org-directory "~/play"))
+  (setq org-agenda-files '("~/Dropbox/work/workflow/"))
   ;; (setq org-agenda-file-regexp "\\`[^.].*\\.txt\\'")
   ;; (setq org-agenda-file-regexp "\\`[^.].*(\\.org|\\.txt)\\'")
-  (setq org-default-notes-file (concat org-directory "/notes.org"))
+  (setq org-default-notes-file (concat org-agenda-files "/stuff.org"))
+  (setq org-capture-templates
+        '(
+          ("s" "Capture stuff" entry (file org-default-notes-file)
+           "* %?\n%i")
+          ;; ("p" "Page" entry (file+olp "~/Dropbox/work/notes/cse_on_call_logs.org" "CSE On Call Logs")
+          ;;  "** %T\n\n*** %?\n\n*Description:*\n\n*Link:*\n\n*Explanation:*\n\n")
+          ;; ("t" "Todo" entry (file+olp "~/Dropbox/work/notes/notes.org" "Tasks")
+          ;;  "* TODO %?\n  %i\n  %a")
+          ))
+  (setq org-refile-targets '(("~/Dropbox/work/workflow/projects.org" :maxlevel . 2)
+                             ("~/Dropbox/work/workflow/someday.org" :maxlevel . 1)
+                             ("~/Dropbox/work/workflow/Next_Actions.org" :maxlevel . 1)
+                             ))
   ;; (setq jiralib-url "https://atlassian.spscommerce.com:443")
   ;; (setq org-jira-working-dir (concat org-directory "/org-jira"))
   ;; js2-mode and js-mode indents, respectively.
@@ -553,13 +570,6 @@ before packages are loaded."
   ;;           #'(lambda ()
   ;;             (setq js-indent-level 2)
   ;;             (setq evil-shift-width 2)))
-  (setq org-capture-templates
-        '(
-          ("p" "Page" entry (file+olp "~/Dropbox/work/notes/cse_on_call_logs.org" "CSE On Call Logs")
-           "** %T\n\n*** %?\n\n*Description:*\n\n*Link:*\n\n*Explanation:*\n\n")
-          ("t" "Todo" entry (file+olp "~/Dropbox/work/notes/notes.org" "Tasks")
-           "* TODO %?\n  %i\n  %a")
-          ))
   (org-babel-do-load-languages
    'org-babel-load-languages
    '(
@@ -571,6 +581,8 @@ before packages are loaded."
      (shell . t)
      (dot . t)
      ))
+  (setq org-journal-dir org-directory)
+  (add-to-list 'org-modules 'org-habit)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -626,7 +638,7 @@ This function is called at the very end of Spacemacs initialization."
  '(nrepl-message-colors
    '("#336c6c" "#205070" "#0f2050" "#806080" "#401440" "#6c1f1c" "#6b400c" "#23733c"))
  '(package-selected-packages
-   '(pdf-tools tablist zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme modus-vivendi-theme modus-operandi-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme kaolin-themes jbeans-theme jazz-theme ir-black-theme inkpot-theme hemisu-theme hc-zenburn-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme eziam-theme exotica-theme espresso-theme dracula-theme doom-themes darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme chocolate-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme ample-zen-theme alect-themes afternoon-theme tern yapfify stickyfunc-enhance pytest pyenv-mode py-isort pippel pipenv pyvenv pip-requirements lsp-python-ms live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode posframe lsp-treemacs bui lsp-mode cython-mode counsel-gtags counsel swiper ivy company-anaconda blacken anaconda-mode pythonic anti-zenburn-theme ample-theme sublime-themes heroku-theme django-theme darktooth-theme gruvbox-theme autothemer yasnippet-snippets yaml-mode xterm-color ws-butler writeroom-mode winum which-key web-mode web-beautify vterm volatile-highlights vi-tilde-fringe uuidgen use-package treemacs-projectile treemacs-persp treemacs-magit treemacs-evil toc-org terminal-here tagedit symon symbol-overlay string-inflection spaceline-all-the-icons smeargle slim-mode shell-pop scss-mode sass-mode reveal-in-osx-finder restart-emacs rainbow-delimiters pug-mode prettier-js popwin pcre2el password-generator paradox ox-jira ox-clip osx-trash osx-dictionary osx-clipboard orgit org-projectile org-present org-pomodoro org-mime org-jira org-download org-cliplink org-bullets org-brain open-junk-file nodejs-repl multi-term move-text mmm-mode markdown-toc magit-svn magit-section magit-gitflow lorem-ipsum livid-mode link-hint launchctl json-navigator json-mode js2-refactor js-doc jinja2-mode insert-shebang indent-guide impatient-mode hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-ls-git helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag graphviz-dot-mode google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ gist gh-md fuzzy forge font-lock+ flyspell-correct-helm flycheck-bashate flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode editorconfig dumb-jump dotenv-mode diminish devdocs deft confluence company-web company-terraform company-tern company-shell company-go company-ansible column-enforce-mode clean-aindent-mode centered-cursor-mode browse-at-remote auto-yasnippet auto-highlight-symbol auto-dictionary ansible-doc ansible aggressive-indent ace-link ace-jump-helm-line ac-ispell))
+   '(hierarchy json-snatcher json-reformat tide typescript-mode skewer-mode yasnippet multiple-cursors js2-mode import-js grizzl simple-httpd dash-functional company add-node-modules-path org-journal pdf-tools tablist zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme modus-vivendi-theme modus-operandi-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme kaolin-themes jbeans-theme jazz-theme ir-black-theme inkpot-theme hemisu-theme hc-zenburn-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme eziam-theme exotica-theme espresso-theme dracula-theme doom-themes darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme chocolate-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme ample-zen-theme alect-themes afternoon-theme tern yapfify stickyfunc-enhance pytest pyenv-mode py-isort pippel pipenv pyvenv pip-requirements lsp-python-ms live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode posframe lsp-treemacs bui lsp-mode cython-mode counsel-gtags counsel swiper ivy company-anaconda blacken anaconda-mode pythonic anti-zenburn-theme ample-theme sublime-themes heroku-theme django-theme darktooth-theme gruvbox-theme autothemer yasnippet-snippets yaml-mode xterm-color ws-butler writeroom-mode winum which-key web-mode web-beautify vterm volatile-highlights vi-tilde-fringe uuidgen use-package treemacs-projectile treemacs-persp treemacs-magit treemacs-evil toc-org terminal-here tagedit symon symbol-overlay string-inflection spaceline-all-the-icons smeargle slim-mode shell-pop scss-mode sass-mode reveal-in-osx-finder restart-emacs rainbow-delimiters pug-mode prettier-js popwin pcre2el password-generator paradox ox-jira ox-clip osx-trash osx-dictionary osx-clipboard orgit org-projectile org-present org-pomodoro org-mime org-jira org-download org-cliplink org-bullets org-brain open-junk-file nodejs-repl multi-term move-text mmm-mode markdown-toc magit-svn magit-section magit-gitflow lorem-ipsum livid-mode link-hint launchctl json-navigator json-mode js2-refactor js-doc jinja2-mode insert-shebang indent-guide impatient-mode hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-ls-git helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag graphviz-dot-mode google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates github-search github-clone gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ gist gh-md fuzzy forge font-lock+ flyspell-correct-helm flycheck-bashate flx-ido fish-mode fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode editorconfig dumb-jump dotenv-mode diminish devdocs deft confluence company-web company-terraform company-tern company-shell company-go company-ansible column-enforce-mode clean-aindent-mode centered-cursor-mode browse-at-remote auto-yasnippet auto-highlight-symbol auto-dictionary ansible-doc ansible aggressive-indent ace-link ace-jump-helm-line ac-ispell))
  '(pdf-view-midnight-colors '("#FDF4C1" . "#282828"))
  '(pos-tip-background-color "#36473A")
  '(pos-tip-foreground-color "#FFFFC8")
